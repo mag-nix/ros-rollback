@@ -1,15 +1,37 @@
-# NixOS ROS systemd
+# NixOS ROS Generation & Rollback
 
-- This installs ros and the ros packages declared in `systemPackages`
+## NixOS Generation & Virtualization
+
+- This installs ros and the ros packages declared in `systemPackages` of ros.nix for multiple targets
 - Sets up systemd services for the `roscore`, `talker` and `listener`
 
-## Usage
+The targets are:
 
-- Log into NixOS GCE VM
+- Google Cloud Platform
+- VirtualBox
+- VMWare
+- .iso
+
+## Usage of Virtual Box
 
 ``` bash
-git clone https://github.com/mag-nix/ros-systemd.git
-sudo nixos-rebuild switch --flake .#nixos-robot-1 --impure
+nix build .#vbox
+```
+
+- Install Virtual Box
+- Import Appliance
+- Use `nixos-*-x86_64-linux.ova` file for new vm
+
+![](img/2024-10-09-15-40-29.png)
+
+- Set port forwarding from local host to vm
+
+![](img/2024-10-09-15-39-51.png)
+
+ssh into vm
+
+``` bash
+ssh -p 3022 robotix@127.0.0.1
 ```
 
 Check the services using
@@ -26,8 +48,6 @@ Or use ROS for introspection
 rostopic echo /chatter
 ```
 
-## Open points
+## Deploy using deploy-rs with rollback
 
-- [ ] Properly configure and use GCE (currently `--impure` is used)
-- [ ] Installation into nix containers might be interesting for separation for robustness and resource limitation
-- [ ] Declare multiple ros services instead of one with all nodes and launch files
+

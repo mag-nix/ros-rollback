@@ -4,11 +4,12 @@
   # FIXME: <..> is not the proper way due to impure behavior
   imports = [
     <nixpkgs/nixos/modules/virtualisation/google-compute-image.nix>
+    ./ros.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  ros-module.overlay = nix-ros-overlay;
 
-  services.ros = (import ./ros.nix);
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = "24.05";
 }
