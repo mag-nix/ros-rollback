@@ -12,19 +12,15 @@
     nixpkgs.follows = "nix-ros-overlay/nixpkgs"; # Usage of different nixpkgs for fixes and adaptions
   };
 
-  outputs = { self, nixpkgs, nix-ros-overlay, nixos-generators, deploy-rs, ... }@attrs: {
-
-    # NixOS Systems
-    nixosConfigurations.nixos-robot-1 = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, nix-ros-overlay, nixos-generators, deploy-rs, ... }@attrs:
+    let
       system = "x86_64-linux";
-      specialArgs = attrs;
-      modules = [
-        nix-ros-overlay.nixosModules.default
-        ./configuration/configuration-gce.nix
-      ];
-    };
+      pkgs = import nixpkgs { inherit system; };
+    in
+    {
+    # NixOS System
     nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
       specialArgs = attrs;
       modules = [
         ./hardware-configuration/vm-hardware-configuration.nix
@@ -34,18 +30,10 @@
     };
 
     # Nix Packages
-    packages.x86_64-linux = {
-      vmware = nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
-        specialArgs = attrs;
-        modules = [
-          nix-ros-overlay.nixosModules.default
-          ./configuration/configuration-vm.nix
-        ];
-        format = "vmware";
-      };
+    packages.${system} = {
+      # Supported formats at https://github.com/nix-community/nixos-generators
       vbox = nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = attrs;
         modules = [
           nix-ros-overlay.nixosModules.default
@@ -54,7 +42,7 @@
         format = "virtualbox";
       };
       install-iso = nixos-generators.nixosGenerate {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = attrs;
         modules = [
           nix-ros-overlay.nixosModules.default
@@ -67,14 +55,24 @@
     deploy.nodes.local-vm = {
       hostname = "localhost";
       profiles.system = {
+        remoteBuild = false;
+        autoRollback = false;
+        magicRollback = false;
         sshUser = "robotix";
         sshOpts = [ "-p" "3022" ];
+        user = "root";
         path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-vm;
       };
     };
 
     # This is highly advised, and will prevent many possible mistakes
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
+    devShell.${system} = pkgs.mkShell {
+      buildInputs = [ pkgs.deploy-rs ];
+      inputsFrom = [ ];
+    };
+
   };
 
   nixConfig = {

@@ -9,13 +9,15 @@ in
 
   ros-module.overlay = nix-ros-overlay;
 
-  boot.loader.grub.enable = true;
   boot.kernelParams = [ "console=tty0" ];
 
-  users.users.robotix = {
+  users.users."robotix" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    initialPassword = "test";
+    initialPassword = "robot";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII85Hgi5bFo5FAkZh4CxQoyWk4f7AoxpUawXnmuQWJUI jeising@pdemu1cml000342"
+    ];
   };
 
   services.getty.autologinUser = "robotix";
@@ -26,7 +28,12 @@ in
 
   services.sshd.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "robotix" ];
+  };
+
+  security.sudo.wheelNeedsPassword = false;
 
   system.stateVersion = "24.05";
 }

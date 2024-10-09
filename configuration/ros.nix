@@ -24,11 +24,13 @@
         package = "rospy_tutorials";
         # ROS Node
         node = "talker";
+        # node = "talker_header.py";
       };
 
       listener = {
         package = "rospy_tutorials";
         node = "listener";
+        # node = "listener_header.py";
       };
     };
   };

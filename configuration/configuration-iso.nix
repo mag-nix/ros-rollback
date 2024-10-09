@@ -14,7 +14,7 @@ in
   users.users.robotix = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    initialPassword = "test";
+    initialPassword = "robot";
   };
 
   networking.hostName = "nixos";
