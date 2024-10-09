@@ -2,15 +2,8 @@
 
 ## NixOS Generation & Virtualization
 
-- This installs ros and the ros packages declared in `systemPackages` of ros.nix for multiple targets
-- Sets up systemd services for the `roscore`, `talker` and `listener`
-
-The targets are:
-
-- Google Cloud Platform
-- VirtualBox
-- VMWare
-- .iso
+- This flake installs ros and the ros packages declared in `systemPackages` of ros.nix for multiple targets
+- It sets up systemd services for the `roscore`, `talker` and `listener` in the VM
 
 ## Usage of Virtual Box
 
