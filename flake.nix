@@ -41,6 +41,15 @@
         ];
         format = "virtualbox";
       };
+      qemu = nixos-generators.nixosGenerate {
+        inherit system;
+        specialArgs = attrs;
+        modules = [
+          nix-ros-overlay.nixosModules.default
+          ./configuration/configuration-vm.nix
+        ];
+        format = "qcow";
+      };
       install-iso = nixos-generators.nixosGenerate {
         inherit system;
         specialArgs = attrs;

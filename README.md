@@ -21,17 +21,56 @@ nix build .#vbox
 
 ![](img/2024-10-09-15-39-51.png)
 
+## Usage of QEMU
+
+### Build image
+
+``` bash
+nix build .#qemu
+```
+
+### Make it writable
+
+``` bash
+cp result/nixos.qcow2 .
+chmod +w nixos.qcow2
+```
+
+### Import the image
+
+``` bash
+virt-install --name nixos --ram 2048 --disk nixos.qcow2 --import
+```
+
+### Direcly access VM
+
+``` bash
+virsh console nixos
+```
+
 ## ssh into vm
+
+### Virtual Box
 
 ``` bash
 ssh -p 3022 robotix@127.0.0.1
 ```
+
+### QEMU
+
+``` bash
+ssh robotix@172.27.0.3
+```
+
+### Password
 
 Use the password `robot` defined in `configuration/configuration-vm.nix`
 
 ``` nix
 initialPassword = "robot";
 ```
+
+### Testing
 
 Check the services using
 
