@@ -26,8 +26,8 @@ in
   networking.hostName = "nixos";
 
   networking.useDHCP = false;
-  networking.interfaces.ens3.ipv4.addresses = [ {
-    address = "172.27.0.3";
+  networking.interfaces.ens2.ipv4.addresses = [ {
+    address = "192.168.122.10";
     prefixLength = 24;
   } ];
 

@@ -74,6 +74,20 @@
       };
     };
 
+    deploy.nodes.local-qemu = {
+      hostname = "192.168.122.10";
+      profiles.system = {
+        remoteBuild = false;
+        autoRollback = false;
+        magicRollback = false;
+        sshUser = "robotix";
+        sshOpts = [ "-p" "22" ];
+        user = "root";
+        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-vm;
+      };
+    };
+
+
     # This is highly advised, and will prevent many possible mistakes
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 

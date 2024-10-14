@@ -39,13 +39,22 @@ chmod +w nixos.qcow2
 ### Import the image
 
 ``` bash
-virt-install --name nixos --ram 2048 --disk nixos.qcow2 --import
+sudo virt-install --name rollback --ram 2048 --disk nixos.qcow2 --import  --nographics --os-type=generic --check all=off --hvm
 ```
 
 ### Direcly access VM
 
 ``` bash
-virsh console nixos
+virsh console rollback
+```
+
+### Stop and Remove Qemu VM
+
+``` bash
+# Stop
+sudo virsh shutdown rollback
+# Remove
+sudo virsh undefine rollback
 ```
 
 ## ssh into vm
@@ -59,7 +68,7 @@ ssh -p 3022 robotix@127.0.0.1
 ### QEMU
 
 ``` bash
-ssh robotix@172.27.0.3
+ssh robotix@192.168.122.10
 ```
 
 ### Password
@@ -111,7 +120,10 @@ devShell.${system} = pkgs.mkShell {
 
 ``` bash
 nix develop
+# virtual box
 deploy .#local-vm
+ # qemu
+deploy .#local-qemu # qemu
 ```
 
 ## Deploy to vm using deploy-rs **with** rollbacks
