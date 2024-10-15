@@ -18,6 +18,9 @@ in
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII85Hgi5bFo5FAkZh4CxQoyWk4f7AoxpUawXnmuQWJUI jeising@pdemu1cml000342"
     ];
+    packages = [
+      # Additional packages for robotix user
+    ];
   };
 
   services.getty.autologinUser = "robotix";

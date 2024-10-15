@@ -103,7 +103,7 @@
     # This is highly advised, and will prevent many possible mistakes
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
-    devShell.${system} = pkgs.mkShell {
+    devShells.${system}.default = pkgs.mkShell {
       buildInputs = [ pkgs.deploy-rs ];
       inputsFrom = [ ];
     };
