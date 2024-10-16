@@ -37,7 +37,7 @@ nixosConfigurations.nixos-vm = nixpkgs.lib.nixosSystem {
 };
 ```
 
-- Deploy-rs is one way to achieve and we could extend this to also rollback when our system operates not as expected
+- Deploy-rs is one way to achieve delivery and rollback. We could extend this to also rollback when our system operates not as expected
 
 - There also would need to be a way to deal with the update and rollback of e.g. databases or data in general which is not covered here
 
@@ -87,6 +87,8 @@ virsh console rollback
 ```
 
 ### Stop and Remove Qemu VM
+
+After we are done with the vm we can stop and remove it.
 
 ``` bash
 # Stop
@@ -160,8 +162,8 @@ devShell.${system} = pkgs.mkShell {
 nix develop
 # virtual box
 deploy .#local-vm
- # qemu
-deploy .#local-qemu-first # qemu
+# qemu
+deploy .#local-qemu-first
 ```
 
 ## Deploy to vm using deploy-rs **with** rollbacks
@@ -186,7 +188,7 @@ deploy .#local-vm
 deploy .#local-qemu
 ```
 
-If you like to have prove; turn on monitoring of the ssh service in the virtual box terminal:
+If you like to have prove; turn on monitoring of the ssh service in the directly connected terminal (non-ssh):
 
 ``` bash
 watch --interval 1 systemctl status sshd.service

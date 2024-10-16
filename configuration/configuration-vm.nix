@@ -25,7 +25,6 @@ in
 
   services.getty.autologinUser = "robotix";
 
-  networking.networkmanager.enable = true;
   networking.hostName = "nixos";
 
   networking.useDHCP = false;
